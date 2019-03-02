@@ -2,32 +2,50 @@ from flask import Flask
 from flask import url_for
 from flask import render_template
 from flask import request,redirect
+import db
 import MySQLdb
 app= Flask(__name__)
 @app.route('/')
 def hello():
 	redirect(url_for(login))
 
-@app.route('/login',methods=['POST','GET'])
+@app.route('/login',methods=('POST','GET')
 def login():
+#Login page redirects
 	error=None
 	if request.method=='POST':
-		if valid_login(request.form['eid'],request.form['username'],request.form['password']):
-			if request.form['eid'] in range(1,100):
+		Eid= request.form['eid']
+		username= request.form['username']
+		password=request.form['password']
+#redirect to different dashboard based on the eid of the employee
+		if login(username,password):
+			if Eid in range(1,100):
+				session.clear()
+				session['user_id'] = user['id']
 				return render_template('manager.html')
-			elif request.form['eid'] in range(101,500):
+			elif Eid in range(101,500):
+				session.clear()
+				session['user_id']=user['id']
 				return render_template('teamleader.html')
 			else:
-				return render_template('emp.html')
-
+				session.clear()
+				session['user_id']=user[id]
+				return render_template(emp.html)
 		else:
-			error = 'Invalid username/password'
-			flash(error)
-	return render_template('login.html',error=error)
+			flash("Incorrect Credentials")
 @app.route('/form_validation')
-def create():
+def create(): 
+#send data from signup form to the database 
 	if request.method=='POST':
-		if valid_login():
-			return redirect(url_for('login'))
+		username=request.form['username']
+		password=request.form['password']
+		eid=request.form['eid']
+		signup(username,eid,password)
+		return redirect(url_for('login'))
+		
+@app.route('/logout')
+def logout():
+	session.clear()
+	return redirect(url_for(login))
 if __name__=='__main__':
 	app.run()
