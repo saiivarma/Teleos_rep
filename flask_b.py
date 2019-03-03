@@ -2,6 +2,7 @@ from flask import Flask,session
 from flask import url_for,flash
 from flask import render_template
 from flask import request,redirect
+import model_data
 import db as database
 import MySQLdb
 app= Flask(__name__)
@@ -10,11 +11,11 @@ app.config['SECRET_KEY'] = 'super secret key'
 def login():
 #Login page redirects
 	if request.method == 'POST':
-		Eid= request.form['empid']
+		Eid= request.form['empid'] 
 		username= request.form['username']
 		password= request.form['password']
 		session['user']=username
-		session['id']=Eid
+		session['id']=Eid # Use this Eid according the requirement in the below routes using session.get('id') method
 		top=session.get('top')
 #redirect to different dashboard based on the eid of the employee
 		if database.login(username,password):
@@ -55,17 +56,21 @@ def manager():
 @app.route('/emp')
 def emp():
 	username=session.get('user')
-	eid=503
+	eid=session.get('id')
 	v1=v2=v3=v4=v5=v6=v7=0
 	v1=database.get_week_time(eid,'2019-03-05')*80
 	v2=database.get_week_time(eid,'2019-03-04')*10
 	v3=database.get_week_time(eid,'2019-03-03')*90
-	v4=database.get_today_clicks(502,'python')*100
-	v5=database.get_today_clicks(502,'Web')*100
-	v6=database.get_today_time(502)
-	v7=database.get_today_time(502)
-	v8=100-v4+v5
-	return render_template('emp.html',username=username,mon=v1,tue=v2,wed=v3,click=v4,click2=v5,time1=v6,time2=v7,click3=v8)
+	v4=database.get_week_time(eid,'2019-03-02')*78
+	v5=database.get_week_time(eid,'2019-03-01')*23
+	v6=database.get_week_time(eid,'2019-03-03')*32
+	v7=database.get_week_time(eid,'2019-03-04')*42
+	v8=database.get_today_clicks(eid,'python')*100
+	v9=database.get_today_clicks(eid,'Web')*100
+	v10=database.get_today_time(eid)
+	v11=database.get_today_time(eid)
+	v12=100-v8+v9
+	return render_template('emp.html',username=username,mon=v1,tue=v2,wed=v3,thu=v4,fri=v5,sat=v6,sun=v7,click=v8,click2=v9,time1=v10,time2=v11,click3=v12)
 #All the data related to the teamleader
 @app.route('/teamleader')
 def teamleader():
@@ -101,8 +106,8 @@ def svg():
 		
 	else:
 		page='emp'
-		
-	return render_template('svg.html',username=username,page=url_for(page))
+	x=model_data.model(int(id))		
+	return render_template('svg.html',username=username,page=url_for(page),val=x*100)
 
 #Method to run the Flask App
 if __name__=='__main__':
