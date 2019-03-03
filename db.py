@@ -20,3 +20,14 @@ def signup(eid,uname,passwd):
 	cur.execute("insert into login values(%s,%s,%s)",(eid,uname,passwd,))
 	conn.commit()
 #To obtain the day-wise data for the week wise report
+def get_week_time(eid,date):
+	time = cur.execute("select time from weekly where eid=%s and date=%s",(eid,date,))
+	
+	conn.commit()
+	return time
+def get_today_time(eid):
+	time=cur.execute("select time from daily where eid=%s",(eid,))
+	return time
+def get_today_clicks(eid,programs):
+	clicks=cur.execute("select clicks from daily where eid=%s and programs=%s",(eid,programs,))
+	return clicks
