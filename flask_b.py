@@ -19,11 +19,11 @@ def login():
 #redirect to different dashboard based on the eid of the employee
 		if database.login(username,password):
 			if int(Eid) in range(1,100):
-				return render_template('manager.html',name=top)
+				return redirect(url_for('manager'))
 			elif int(Eid) in range(100,500):
-				return render_template('teamleader.html',name=top)
+				return redirect(url_for('teamleader'))
 			else:
-				return render_template('emp.html',name=top)
+				return redirect(url_for('emp'))
 		
 			
 	return render_template('login.html')
@@ -46,15 +46,12 @@ def form_validation():
 		flash('user registration sucessfull')
 		flash(error)
 	return render_template('form_validation.html')
-	
-@app.route('/logout')
-def logout():
-	session.clear()
-	return redirect(url_for('home'))
+# All the data related to the manager 	
 @app.route('/manager')
 def manager():
 	username=session.get('user')
 	return render_template('manager.html',username=username)
+#All the data related to the employee
 @app.route('/emp')
 def emp():
 	username=session.get('user')
@@ -69,26 +66,45 @@ def emp():
 	v7=database.get_today_time(502)
 	v8=100-v4+v5
 	return render_template('emp.html',username=username,mon=v1,tue=v2,wed=v3,click=v4,click2=v5,time1=v6,time2=v7,click3=v8)
+#All the data related to the teamleader
 @app.route('/teamleader')
 def teamleader():
 	username=session.get('user')
 	return render_template('teamleader.html',username=username)
+#All the data related to the leader board
 @app.route('/leaderboard')
 def leaderboard():
 	username=session.get('user')
 	id=session.get('id')
-	if id in range(1,100):
+	if int(id) in range(1,100):
 		page='manager'
-	elif id in range(101,500):
+		page2='manager'
+	elif int(id) in range(101,500):
 		page='teamleader'
+		page2='teamleader'
+
 	else:
 		page='emp'
+		page2='svg'
 
-	return render_template('leaderboard.html',username=username,page=url_for(page))
+	return render_template('leaderboard.html',username=username,page=url_for(page),page2=url_for(page2))
+#All the data related to the efficiency meter
 @app.route('/svg')
 def svg():
 	username=session.get('user')
-	return render_template('svg.html',username=username)
+	id=session.get('id')
+	if int(id) in range(1,100):
+		page='manager'
+		
+	elif int(id) in range(101,500):
+		page='teamleader'
+		
+	else:
+		page='emp'
+		
+	return render_template('svg.html',username=username,page=url_for(page))
+
+#Method to run the Flask App
 if __name__=='__main__':
 	app.secret_key='some secret key'
 	app.config['SESSION_TYPE']='filesystem'
