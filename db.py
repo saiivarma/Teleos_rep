@@ -16,7 +16,7 @@ def login(uname,passwd):
 		if row[0]==passwd:
 			return True
 #To register into the web app
-def signup(uname,eid,passwd):
-	cur.execute("insert into login values(%s,%s,%s)",(uname,eid,passwd,))
+def signup(eid,uname,passwd):
+	cur.execute("insert into login values(%s,%s,%s)",(eid,uname,passwd,))
 	conn.commit()
 #To obtain the day-wise data for the week wise report
