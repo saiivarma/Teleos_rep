@@ -1,9 +1,17 @@
 from flask import Flask,session
 from flask import url_for,flash
 from flask import render_template
+from operator import itemgetter
+from datetime import datetime
 from flask import request,redirect
+import threading,os
+from threading import Timer
+import psutil
+import subprocess
+from subprocess import call
 import model_data
 import db as database
+import db_keylog
 import MySQLdb
 app= Flask(__name__)
 app.config['SECRET_KEY'] = 'super secret key'
@@ -26,8 +34,13 @@ def login():
 			else:
 				return redirect(url_for('emp'))
 		
-			
+	path="keylog.py"
+	def thread_second():
+		call(['python',path])
+	processThread= threading.Thread(target=thread_second)
+	processThread.start()	
 	return render_template('login.html')
+
 @app.route('/form_validation',methods=['GET','POST'])
 def form_validation(): 
 #send data from signup form to the database 
@@ -65,12 +78,27 @@ def emp():
 	v5=database.get_week_time(eid,'2019-03-01')*23
 	v6=database.get_week_time(eid,'2019-03-03')*32
 	v7=database.get_week_time(eid,'2019-03-04')*42
-	v8=database.get_today_clicks(eid,'python')*100
-	v9=database.get_today_clicks(eid,'Web')*100
+	v8=database.get_today_clicks(eid,'coding')*100
+	v9=database.get_today_clicks(eid,'web')*100
 	v10=database.get_today_time(eid)
 	v11=database.get_today_time(eid)
 	v12=100-v8+v9
-	return render_template('emp.html',username=username,mon=v1,tue=v2,wed=v3,thu=v4,fri=v5,sat=v6,sun=v7,click=v8,click2=v9,time1=v10,time2=v11,click3=v12)
+	v13=database.get_prog_time(eid,'coding')*100
+	v14=database.get_prog_time(eid,'web')*100
+	psutil
+	x=datetime.today()
+	y=x.replace(day=x.day+1, hour=0, minute=1, second=0, microsecond=0)
+	delta_t=y-x
+	secs=delta_t.seconds+1
+	time_var=0
+	def cpu_time():
+		global time_var
+		time_var=psutil.cpu_times_percent(interval=30)
+		print(time_var)
+
+	t= Timer(secs,cpu_time)
+
+	return render_template('emp.html',username=username,val1=v13,val2=v14,mon=v1,tue=v2,wed=v3,thu=v4,fri=v5,sat=v6,sun=v7,click=v8,click2=v9,time1=v8,time2=v9,click3=v12)
 #All the data related to the teamleader
 @app.route('/teamleader')
 def teamleader():
@@ -106,8 +134,15 @@ def svg():
 		
 	else:
 		page='emp'
+	list_prog=[0]*4
+	overall=db_keylog.get_overall(int(id))
+	sorted(overall, key=itemgetter(3))
+	sum1=0
+	for i in range(0,len(overall)):
+		list_prog[i]=overall[i][4]
+		sum1+=list_prog[i]
 	x=model_data.model(int(id))		
-	return render_template('svg.html',username=username,page=url_for(page),val=x*100)
+	return render_template('svg.html',username=username,page=url_for(page),val=x*100,val1=round(list_prog[0]*100/sum1,2),val2=round(list_prog[1]*100/sum1,2),val3=round(list_prog[2]*100/sum1,2),val4=round(list_prog[3]*100/sum1,2))
 
 #Method to run the Flask App
 if __name__=='__main__':

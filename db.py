@@ -29,5 +29,8 @@ def get_today_time(eid):
 	time=cur.execute("select time from daily where eid=%s",(eid,))
 	return time
 def get_today_clicks(eid,programs):
-	clicks=cur.execute("select clicks from daily where eid=%s and programs=%s",(eid,programs,))
+	clicks=cur.execute("select clicks from daily where eid=%s and Category=%s",(eid,programs,))
 	return clicks
+def get_prog_time(eid,programs):
+	time=cur.execute("select time from daily where eid=%s and Category=%s",(eid,programs,))
+	return time
