@@ -1,4 +1,5 @@
-# Teleos_rep
+
+# Team: Teleos
 
 # Problem Statment - Time and Productivity Analysis
 
@@ -20,7 +21,7 @@ Based on this report , the organization can identify what are the factors causin
 
 ## Future Enhancements
 The following enhancements can be made to the present model to increase the efficiency and increase the scope of the application.
-1.	Face detection and gaze tracking module to monitor the employee’s presence at all times.
+1.	Face detection and gaze tracking module to monitor the employee’s presence at all times.(Only used to alert the user
 2.	Calculation of the CPU’s Utilization at every point of time to make sure that the employee is not sitting idle in front of the computer.
 3.	A module that readily downloads the pdf version of the report at any instance.
 
@@ -32,6 +33,7 @@ The following enhancements can be made to the present model to increase the effi
 - pynput
 - win32gui
 - pandas
+- numpy
 
 
 ## How to Execute ?
@@ -46,4 +48,4 @@ Copy and Paste the the link shown in a Web Browser. Make sure the server is runn
 ## Supported OS
 As of now the product only works on the windows and unix evnironment and not on MacOS.
 
-Because of the security reasons of MacOS,the system is not allowing the module pynput to track the key and mouse events.we're working on the alternative module for the mac to track key and mouse events
+Because of the security reasons of MacOS,the system is not allowing the module pynput to track the key and mouse events.we're working on the alternative module for the mac to track key and mouse events.
