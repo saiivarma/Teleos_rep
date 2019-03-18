@@ -14,15 +14,19 @@ def model(eid):
 	list1 = ["keyclicks",
 	"Mouseclicks",
 	"time",
-	"cpu",
-	"ram",
+	"cpu_idle_state",
+	"ram_usage",
 	"priority",
 	"web browser",
 	"coding",
 	"documentation",
 	"uml Diag",
 	"others"]
+#Prority attribute- The experience level of the developer in the industry.
 
+
+#Considered random values as there's no data available from the specific industry.
+#The data of the above attributes must be collected inorder to use the model for production.
 	v = np.c_[np.random.randint(1000,17000,size=1000),np.random.randint(100,9000,size=1000),np.random.randint(1000,15000,size=1000)]
 	w = np.c_[np.random.sample(1000)*20,np.random.sample(1000)*10]
 	x = np.c_[np.random.randint(1,4,size=1000)]
@@ -52,7 +56,8 @@ def model(eid):
 	y_train = sc_y.fit_transform(y_train)
 	y_train = y_train.ravel()
 	'''
-	#print(x_train)
+#Using linear regression as of now once the data is available the data is trained on the several models.
+#The model with best acuuracy is considered.
 
 	regression = linear_model.BayesianRidge()
 	regression.fit(x_train,y_train)
