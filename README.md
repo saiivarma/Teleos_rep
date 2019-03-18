@@ -43,7 +43,7 @@ python flask_b.py
 ```
 Copy and Paste the the link shown in a Web Browser. Make sure the server is running in the behind. 
 
-##Supported OS
+## Supported OS
 As of now the product only works on the windows and unix evnironment and not on MacOS.
 
 Because of the security reasons of MacOS,the system is not allowing the module pynput to track the key and mouse events.we're working on the alternative module for the mac to track key and mouse events
