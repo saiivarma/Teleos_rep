@@ -4,7 +4,7 @@
 # Problem Statment - Time and Productivity Analysis
 
 ## Proposed Solution 
-In any company , employees are usually divided into certain domains in which ,based on their designation ,work is is allocated.
+In any company , employees are usually divided into certain domains in which ,based on their designation ,work is allocated.
 For example: A developer , should take the input (Uml Diagrams) from a software engineer , understand them and then develop a working
 model.
 However, it so happens that the often employees end up doing work outside their domain.Like the Developer in the above example, might end up documenting the solution instead of developing.Such deviations in the task field will lower the productivity and waste time and resources of the company The solution to avoid such strays is to use an application and track and store the activities and time taken of all the employees and based on this data we provide an analysis of why the aforementioned deviations occur and suggest what to do to avoid them.
